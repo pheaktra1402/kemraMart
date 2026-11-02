@@ -66,7 +66,7 @@ Open http://127.0.0.1:8000
 
 | Email | Password |
 |---|---|
-| admin@kemramart.com | Admin@12345 |
+| admin@kemramart.com | 123456 |
 
 > Change this password before using the app for anything real.
 
