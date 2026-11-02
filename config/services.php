@@ -34,5 +34,16 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'khqr' => [
+    'account_id'     => env('BAKONG_ACCOUNT_ID'),
+    'merchant_name'  => env('KHQR_MERCHANT_NAME'),
+    'merchant_city'  => env('KHQR_MERCHANT_CITY'),
+    'api_token'      => env('BAKONG_API_TOKEN'),
+    'p2p_ref'        => env('KHQR_P2P_REF'),
+    'p2p_account_1'  => env('KHQR_P2P_ACCOUNT_1'),
+    'p2p_account_2'  => env('KHQR_P2P_ACCOUNT_2'),
+    'account_number' => env('KHQR_ACCOUNT_NUMBER'),
+    'bank_name'      => env('KHQR_BANK_NAME', 'ABA Bank'),
+],
 
 ];

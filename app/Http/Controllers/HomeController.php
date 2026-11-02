@@ -36,7 +36,7 @@ class HomeController extends Controller
        if (! $request->filled('search') && ! $request->filled('category')) {
     $popular = Product::query()
         ->with('category')
-        ->withSum('orderItems as total_sold', 'quantity')
+        ->withSum('orderItems as total_sold', 'qty')
         ->having('total_sold', '>', 0)
         ->orderByDesc('total_sold')
         ->limit(4)

@@ -13,8 +13,14 @@ return new class extends Migration
     {
        Schema::create('orders', function (Blueprint $table) {
     $table->id();
-    $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+    $table->foreignId('user_id')->constrained();
     $table->decimal('total', 10, 2);
+    $table->string('currency', 3)->default('USD');
+    $table->string('status')->default('pending'); // pending | paid
+    $table->text('khqr_string')->nullable();
+    $table->string('khqr_md5', 32)->nullable();
+    $table->timestamp('khqr_expires_at')->nullable();
+    $table->timestamp('paid_at')->nullable();
     $table->timestamps();
 });
     }

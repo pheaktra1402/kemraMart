@@ -41,7 +41,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart/{product}', [CartController::class, 'remove'])->name('cart.remove');
 
     // Checkout
-    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+   Route::middleware('auth')->group(function () {
+    Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout.store');
+    Route::get('/orders/{order}/pay', [CheckoutController::class, 'pay'])->name('orders.pay');
+    Route::get('/orders/{order}/check', [CheckoutController::class, 'checkPayment'])->name('orders.checkPayment');
+    Route::get('/orders/{order}', [CheckoutController::class, 'show'])->name('orders.show');
+});
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
