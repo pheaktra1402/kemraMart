@@ -1,58 +1,157 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# KemraMart
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+An online shop for local Cambodian products, built with Laravel. Customers can browse products, add them to a cart and pay with **Bakong KHQR**. Admins manage products, categories and orders from a dashboard.
 
-## About Laravel
+Live demo: https://kemramart.onrender.com
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Home and shop pages with search and category filter
+- Shopping cart and checkout
+- Payment with Bakong KHQR (QR code, payment status check)
+- Role-based access: **admin** and **customer**
+  - Admin: Admin Dashboard + My Dashboard
+  - Customer: My Dashboard (orders, profile)
+- Admin product, category and order management
+- Stock is reduced automatically when an order is paid
+- Responsive UI with Bootstrap 5
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tech stack
 
-## Learning Laravel
+| Layer | Technology |
+|---|---|
+| Backend | Laravel, PHP 8.4 |
+| Frontend | Blade, Bootstrap 5.3 (CDN) |
+| Database | SQLite |
+| Payment | Bakong KHQR |
+| QR code | simplesoftwareio/simple-qrcode |
+| Hosting | Render (Docker + Apache) |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Getting started (local)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Requirements
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- PHP 8.4 with `pdo_sqlite`, `gd`, `mbstring`, `bcmath`
+- Composer 2
 
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Installation
 
 ```bash
-composer require laravel/boost --dev
+git clone https://github.com/pheaktra1402/POS_Mart.git
+cd POS_Mart
 
-php artisan boost:install
+composer install
+cp .env.example .env
+php artisan key:generate
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Create the SQLite database file (use `type nul > database\database.sqlite` on Windows CMD):
 
-## Contributing
+```bash
+touch database/database.sqlite
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Run migrations, seed demo data and link storage:
 
-## Code of Conduct
+```bash
+php artisan migrate
+php artisan db:seed --class=DummyDataSeeder
+php artisan storage:link
+php artisan serve
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Open http://127.0.0.1:8000
 
-## Security Vulnerabilities
+### Demo admin account
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Email | Password |
+|---|---|
+| admin@kemramart.com | Admin@12345 |
+
+> Change this password before using the app for anything real.
+
+## Environment variables
+
+Set these in `.env` locally, or in **Environment** on Render. On Render, enter values **without quotes**.
+
+```env
+APP_NAME=KemraMart
+APP_ENV=production
+APP_DEBUG=false
+APP_KEY=
+APP_URL=https://kemramart.onrender.com
+
+DB_CONNECTION=sqlite
+
+SESSION_DRIVER=database
+CACHE_STORE=database
+
+# Bakong KHQR
+BAKONG_ACCOUNT_ID=
+BAKONG_API_TOKEN=
+KHQR_MERCHANT_NAME=
+KHQR_MERCHANT_CITY=
+KHQR_ACCOUNT_NUMBER=
+KHQR_BANK_NAME=ABA Bank
+KHQR_P2P_REF=
+KHQR_P2P_ACCOUNT_1=
+KHQR_P2P_ACCOUNT_2=
+```
+
+Never commit your real `.env`, API tokens or account numbers.
+
+## Demo data and images
+
+`database/seeders/DummyDataSeeder.php` creates the admin account, categories and sample products using `updateOrCreate`, so it is safe to run more than once.
+
+Product images for the seeder live in `database/seed-image/`. During seeding they are copied to `storage/app/public/products/`, the same place used by admin uploads. If an image is missing, the product is still created without one.
+
+## Deployment on Render
+
+The app runs in Docker (`Dockerfile` + `start.sh`). On every start `start.sh`:
+
+1. Creates the SQLite file
+2. Runs `php artisan migrate --force`
+3. Runs `php artisan db:seed --class=DummyDataSeeder --force`
+4. Links storage and starts Apache
+
+Steps:
+
+1. Push the project to GitHub
+2. On Render, create a **Web Service** from the repository (runtime: Docker)
+3. Add the environment variables above
+4. Deploy
+
+### Important: data on the free plan
+
+On Render's free plan the filesystem is ephemeral. The SQLite database and uploaded images are **reset on every deploy or restart**. Data created by the seeder comes back, but new users, orders and admin uploads are lost.
+
+To keep data permanently, use one of these:
+
+- A Render Persistent Disk (paid) and set `DB_DATABASE=/var/data/database.sqlite`
+- An external database such as PostgreSQL (Neon, Supabase) or MySQL (TiDB Cloud)
+
+## Project structure
+
+```
+app/
+  Http/Controllers/     Home, Shop, Cart, Checkout, dashboards
+  Models/               User, Category, Product, Order, OrderItem
+  Services/KhqrService.php   Builds KHQR payment payloads
+database/
+  migrations/
+  seeders/DummyDataSeeder.php
+  seed-image/           Demo product images
+resources/views/        Blade templates
+routes/web.php
+Dockerfile
+start.sh
+```
+
+## Notes for Linux hosting
+
+Linux file names are case-sensitive. Folder and class names must match exactly (for example `app/Services/KhqrService.php` with `namespace App\Services;`), otherwise the app works on Windows but fails on Render.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is for learning and demonstration purposes.
