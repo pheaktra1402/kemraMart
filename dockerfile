@@ -1,7 +1,8 @@
-FROM php:8.3-apache
+FROM php:8.4-apache
 
-RUN apt-get update && apt-get install -y git unzip libzip-dev libpng-dev libonig-dev libxml2-dev \
-    && docker-php-ext-install pdo_mysql mbstring zip gd bcmath \
+RUN apt-get update && apt-get install -y git unzip libzip-dev libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libxml2-dev libicu-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo_mysql mbstring zip gd bcmath intl exif pcntl \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
@@ -17,7 +18,6 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts \
     && chown -R www-data:www-data storage bootstrap/cache
 
-# Startup script (strip Windows line endings just in case)
 COPY start.sh /start.sh
 RUN sed -i 's/\r$//' /start.sh && chmod +x /start.sh
 
