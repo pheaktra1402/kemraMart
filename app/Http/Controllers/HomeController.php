@@ -37,7 +37,7 @@ class HomeController extends Controller
     $popular = Product::query()
         ->with('category')
         ->withSum('orderItems as total_sold', 'qty')
-        ->having('total_sold', '>', 0)
+        ->whereHas('total_sold', '>', 0)
         ->orderByDesc('total_sold')
         ->limit(4)
         ->get();

@@ -15,7 +15,7 @@ class OrderItem extends Model
                 $q->whereHas('order', fn($o) => $o->where('status', 'paid'));
             }
         ], 'qty')
-            ->having('total_sold', '>', 0)
+            ->whereHas('total_sold', '>', 0)
             ->orderByDesc('total_sold')
             ->limit(4)
             ->get();
