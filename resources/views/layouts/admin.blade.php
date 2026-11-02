@@ -46,14 +46,15 @@
                     Categories
                 </a>
                 
-                <a href="#" class="list-group-item list-group-item-action disabled">
+                <a href="{{ route('admin.orders.index') }}" 
+                    class="list-group-item list-group-item-action {{ request()->routeIs('admins.orders.*') ? 'active' : ''}} ">
                     Orders
                 </a>
                 <a href="{{ route('admin.stock.index') }}"
-   class="list-group-item list-group-item-action {{ request()->routeIs('admin.stock.*') ? 'active' : '' }}">
-    Stock
+                class="list-group-item list-group-item-action {{ request()->routeIs('admin.stock.*') ? 'active' : '' }}">
+                 Stock
                 </a>
-    <a href="{{ route('admin.users') }}"
+                  <a href="{{ route('admin.users') }}"
                    class="list-group-item list-group-item-action {{ request()->routeIs('admins.users') ? 'active' : '' }}">
                     Users
                 </a>

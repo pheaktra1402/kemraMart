@@ -32,7 +32,7 @@
             <table class="table align-middle mb-0">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Product ID</th>
                         <th>Name</th>
                         <th>Category</th>
                         <th>Image</th>

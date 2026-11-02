@@ -13,7 +13,7 @@
             <table class="table align-middle mb-0">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Category ID</th>
                         <th>Name</th>
                         <th>Products</th>
                         <th class="text-end">Actions</th>

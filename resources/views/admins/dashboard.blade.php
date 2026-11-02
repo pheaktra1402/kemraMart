@@ -13,7 +13,6 @@
     .panel { border: 0; border-radius: 16px; }
     .panel-title { color: var(--km-brown); font-weight: 700; }
 </style>
-
 <div class="row g-3 mb-4">
     <div class="col-6 col-xl-3">
         <div class="card stat-card shadow-sm h-100">
@@ -50,8 +49,6 @@
 </div>
 
 <div class="row g-4">
-
-    {{-- LOW STOCK --}}
     <div class="col-xl-7">
         <div class="card panel shadow-sm h-100">
             <div class="card-body">
@@ -88,30 +85,6 @@
             </div>
         </div>
     </div>
-
-    {{-- RECENT CUSTOMERS --}}
-    <div class="col-xl-5">
-        <div class="card panel shadow-sm h-100">
-            <div class="card-body">
-                <h5 class="panel-title mb-3">New Customers</h5>
-
-                @if($recentCustomers->isEmpty())
-                    <p class="text-muted mb-0">No customers yet.</p>
-                @else
-                    <ul class="list-group list-group-flush">
-                        @foreach($recentCustomers as $customer)
-                            <li class="list-group-item px-0 d-flex justify-content-between">
-                                <div>
-                                    <div class="fw-semibold">{{ $customer->name }}</div>
-                                    <small class="text-muted">{{ $customer->email }}</small>
-                                </div>
-                                <small class="text-muted">{{ $customer->created_at->diffForHumans() }}</small>
-                            </li>
-                        @endforeach
-                    </ul>
-                @endif
-            </div>
-        </div>
     </div>
 
 </div>
