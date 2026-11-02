@@ -1,7 +1,9 @@
 #!/bin/sh
 set -e
 
-echo "DEBUG DB_HOST=${DB_HOST:-NOT SET} DB_DATABASE=${DB_DATABASE:-NOT SET} DB_PORT=${DB_PORT:-NOT SET}"
+mkdir -p /var/www/html/database
+touch /var/www/html/database/database.sqlite
+chown -R www-data:www-data /var/www/html/database /var/www/html/storage /var/www/html/bootstrap/cache
 
 sed -i "s/Listen 80/Listen ${PORT:-80}/" /etc/apache2/ports.conf
 sed -i "s/:80>/:${PORT:-80}>/" /etc/apache2/sites-available/000-default.conf
