@@ -23,17 +23,17 @@ class DummyDataSeeder extends Seeder
         foreach (['Drinks', 'Fruits', 'Vegetables', 'Snacks'] as $name) {
             $categoryIds[$name] = Category::updateOrCreate(['name' => $name])->id;
         }
-
+        Product::where('name', 'Khmer Krama')->delete();
+        Category::where('name', 'Krama')->delete();
         $products = [
-            ['category' => 'Drinks', 'name' => 'Cambodia Water', 'description' => 'drinking water.', 'price' => 2.00, 'stock' => 50, 'image' => 'water.jpg'],
-            ['category' => 'Drinks', 'name' => 'Sting', 'description' => 'Energy drink.', 'price' => 0.01, 'stock' => 100, 'image' => 'sting.jpg'],
-            ['category' => 'Fruits', 'name' => 'Grape', 'description' => 'Fresh sweet grapes.', 'price' => 2.50, 'stock' => 40, 'image' => 'grap.jpg'],
-            ['category' => 'Fruits', 'name' => 'Banana', 'description' => 'Fresh local bananas.', 'price' => 0.01, 'stock' => 80, 'image' => 'banana.jpg'],
+            ['category' => 'Drinks', 'name' => 'Cambodia Water', 'description' => 'Pure drinking water.', 'price' => 2.00, 'stock' => 50, 'image' => 'water.jpg'],
+            ['category' => 'Drinks', 'name' => 'Sting', 'description' => 'Energy drink.', 'price' => 0.18, 'stock' => 100, 'image' => 'sting.jpg'],
+            ['category' => 'Fruits', 'name' => 'Grap', 'description' => 'Fresh sweet grapes.', 'price' => 2.50, 'stock' => 40, 'image' => 'grap.jpg'],
+            ['category' => 'Fruits', 'name' => 'Banana', 'description' => 'Fresh local bananas.', 'price' => 0.60, 'stock' => 80, 'image' => 'banana.jpg'],
             ['category' => 'Fruits', 'name' => 'Avocado', 'description' => 'Creamy ripe avocado.', 'price' => 3.00, 'stock' => 30, 'image' => 'avocado.jpg'],
             ['category' => 'Vegetables', 'name' => 'Cucumber', 'description' => 'Crisp fresh cucumber.', 'price' => 0.01, 'stock' => 100, 'image' => 'cucumber.jpg'],
             ['category' => 'Snacks', 'name' => 'Cookie', 'description' => 'Sweet crunchy cookie.', 'price' => 3.00, 'stock' => 60, 'image' => 'cookie.jpg'],
-            ['category' => 'Snacks', 'name' => 'Bread', 'description' => 'Sweet Bread.', 'price' => 3.00, 'stock' => 60, 'image' => 'bread.jpg'],
-           
+            ['category' => 'Snacks', 'name' => 'Bread', 'description' => 'Freshly baked bread.', 'price' => 1.00, 'stock' => 40, 'image' => 'bread.jpg'],
         ];
 
         foreach ($products as $item) {
@@ -57,7 +57,7 @@ class DummyDataSeeder extends Seeder
     {
         $source = database_path('seed-images/' . $file);
 
-        if (! File::exists($source)) {
+        if (!File::exists($source)) {
             return null;
         }
 
