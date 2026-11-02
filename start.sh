@@ -12,5 +12,7 @@ php artisan package:discover --ansi || true
 php artisan config:cache
 php artisan migrate --force
 php artisan storage:link || true
+php artisan migrate --force
+php artisan db:seed --class=DummyDataSeeder --force
 
 exec apache2-foreground
