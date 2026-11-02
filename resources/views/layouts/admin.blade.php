@@ -57,16 +57,9 @@
             </nav>
         </div>
 
-        {{-- PAGE CONTENT --}}
-        <div class="col-lg-10">
-            @if (session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-            @if (session('error'))
-                <div class="alert alert-danger">{{ session('error') }}</div>
-            @endif
 
-            @yield('admin_content')
+        <div class="col-lg-10">
+          @yield('admin_content')
         </div>
 
     </div>
