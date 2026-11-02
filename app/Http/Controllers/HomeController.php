@@ -33,15 +33,15 @@ class HomeController extends Controller
         // Only shown on the normal home page, not while searching/filtering.
         $popular = null;
 
-       if (! $request->filled('search') && ! $request->filled('category')) {
-    $popular = Product::query()
-        ->with('category')
-        ->withSum('orderItems as total_sold', 'qty')
-        ->whereHas('total_sold', '>', 0)
-        ->orderByDesc('total_sold')
-        ->limit(4)
-        ->get();
-}
+        if (!$request->filled('search') && !$request->filled('category')) {
+            $popular = Product::query()
+                ->with('category')
+                ->withSum('orderItems as total_sold', 'qty')
+                ->whereHas('orderItems')
+                ->orderByDesc('total_sold')
+                ->limit(4)
+                ->get();
+        }
 
         return view('welcome', compact('categories', 'products', 'popular'));
     }
