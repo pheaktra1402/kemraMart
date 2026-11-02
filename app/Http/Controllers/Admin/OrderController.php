@@ -20,7 +20,7 @@ public function index(Request $request)
             });
         })
         ->latest()
-        ->paginate(20)
+        ->paginate(10)
         ->withQueryString();
 
     return view('admins.orders.index', compact('orders'));

@@ -52,7 +52,8 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-    Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::resource('user', \App\Http\Controllers\Admin\UserController::class)
+    ->only(['index', 'edit', 'update', 'destroy']);
 
     Route::get('stock', [StockController::class, 'index'])->name('stock.index');
     Route::get('stock/{product}/edit', [StockController::class, 'edit'])->name('stock.edit');

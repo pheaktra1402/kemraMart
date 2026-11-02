@@ -2,28 +2,42 @@
 
 @section('content')
 
+@php
+    // label => [route name, active pattern]
+    $menu = [
+        'Dashboard'  => ['admin.dashboard',        'admin.dashboard'],
+        'Products'   => ['admin.products.index',   'admin.products.*'],
+        'Categories' => ['admin.categories.index', 'admin.categories.*'],
+        'Orders'     => ['admin.orders.index',     'admin.orders.*'],
+        'Stock'      => ['admin.stock.index',      'admin.stock.*'],
+        'Users'      => ['admin.user.index',       'admin.user.*'],
+    ];
+@endphp
+
 <style>
     :root {
         --km-brown: #6b2d12;
         --km-gold: #e29a2d;
         --km-cream: #fff8ee;
     }
+    .admin-sidebar { position: sticky; top: 80px; }
     .admin-sidebar .list-group-item {
         border: 0;
+        border-left: 4px solid transparent;
         color: var(--km-brown);
         font-weight: 500;
         padding: 12px 16px;
+        transition: background .15s, border-color .15s;
     }
     .admin-sidebar .list-group-item:hover {
         background: var(--km-cream);
         color: var(--km-brown);
     }
     .admin-sidebar .list-group-item.active {
-        background: var(--km-brown);
-        color: #fff;
-    }
-    .admin-sidebar .list-group-item.disabled {
-        color: #aaa;
+        background: var(--km-cream);
+        color: var(--km-brown);
+        font-weight: 700;
+        border-left-color: var(--km-gold);
     }
 </style>
 
@@ -32,37 +46,26 @@
 
         {{-- SIDEBAR --}}
         <div class="col-lg-2">
-            <div class="list-group admin-sidebar shadow-sm rounded-3 overflow-hidden">
-                <a href="{{ route('admin.dashboard') }}"
-                   class="list-group-item list-group-item-action {{ request()->routeIs('admins.dashboard') ? 'active' : '' }}">
-                    Dashboard
-                </a>
-                <a href="{{ route('admin.products.index') }}"
-                   class="list-group-item list-group-item-action {{ request()->routeIs('admins.products.*') ? 'active' : '' }}">
-                    Products
-                </a>
-                <a href="{{ route('admin.categories.index') }}"
-                   class="list-group-item list-group-item-action {{ request()->routeIs('admins.categories.*') ? 'active' : '' }}">
-                    Categories
-                </a>
-                
-                <a href="{{ route('admin.orders.index') }}" 
-                    class="list-group-item list-group-item-action {{ request()->routeIs('admins.orders.*') ? 'active' : ''}} ">
-                    Orders
-                </a>
-                <a href="{{ route('admin.stock.index') }}"
-                class="list-group-item list-group-item-action {{ request()->routeIs('admin.stock.*') ? 'active' : '' }}">
-                 Stock
-                </a>
-                  <a href="{{ route('admin.users') }}"
-                   class="list-group-item list-group-item-action {{ request()->routeIs('admins.users') ? 'active' : '' }}">
-                    Users
-                </a>
-            </div>
+            <nav class="list-group admin-sidebar shadow-sm rounded-3 overflow-hidden">
+                @foreach ($menu as $label => [$routeName, $pattern])
+                    <a href="{{ route($routeName) }}"
+                       class="list-group-item list-group-item-action {{ request()->routeIs($pattern) ? 'active' : '' }}"
+                       @if (request()->routeIs($pattern)) aria-current="page" @endif>
+                        {{ $label }}
+                    </a>
+                @endforeach
+            </nav>
         </div>
 
         {{-- PAGE CONTENT --}}
         <div class="col-lg-10">
+            @if (session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+
             @yield('admin_content')
         </div>
 
